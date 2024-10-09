@@ -3,6 +3,7 @@ import { Usuario } from './usuario.entity';
 import { DetallePedido } from './detalle-pedido.entity';
 import { Mesa } from './mesa.entity';
 import { Cuenta } from './cuenta.entity';
+import { EstadoPedido } from '../enums/estado-pedido.enum'; // Asegúrate de importar el enum
 
 @Entity()
 export class Pedido {
@@ -12,18 +13,25 @@ export class Pedido {
   @Column()
   fecha: Date;
 
-  @Column()
-  estado: string; // 'pendiente', 'listo', 'facturado'
+  @Column({
+    type: 'enum',
+    enum: EstadoPedido,
+    default: EstadoPedido.PENDIENTE, // Valor por defecto
+  })
+  estado: EstadoPedido; // Ahora usaremos el enum EstadoPedido
 
   @ManyToOne(() => Usuario, usuario => usuario.pedidos)
-  usuario: Usuario; // Mesero que registró el pedido
+  usuario: Usuario;
+
+  @Column({ nullable: true }) // Agrega esta línea para permitir que sea nulo
+  usuarioId: number; // Agregar esta propiedad para facilitar el manejo de usuario
 
   @ManyToOne(() => Mesa, mesa => mesa.pedidos)
-  mesa: Mesa; // Mesa donde se realizó el pedido
+  mesa: Mesa;
 
   @OneToMany(() => DetallePedido, detalle => detalle.pedido)
   detalles: DetallePedido[];
 
   @OneToOne(() => Cuenta, cuenta => cuenta.pedido)
-  cuenta: Cuenta; // Relación con Cuenta
+  cuenta: Cuenta;
 }

@@ -8,5 +8,6 @@ import { MesaController } from '../controllers/mesa.controller';
   imports: [TypeOrmModule.forFeature([Mesa])],
   controllers: [MesaController],
   providers: [MesaService],
+  exports: [MesaService, TypeOrmModule.forFeature([Mesa])],
 })
 export class MesaModule {}

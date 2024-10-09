@@ -3,6 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Pedido } from '../entities/pedido.entity';
 import { DetallePedido } from '../entities/detalle-pedido.entity';
+import { CreatePedidoDto } from 'src/dto/create-pedido.dto';
+import { Usuario } from 'src/entities/usuario.entity';
+import { Mesa } from 'src/entities/mesa.entity';
+import { UpdatePedidoDto } from 'src/dto/update-pedido.dto';
 
 @Injectable()
 export class PedidoService {
@@ -11,16 +15,23 @@ export class PedidoService {
     private readonly pedidoRepository: Repository<Pedido>,
     @InjectRepository(DetallePedido)
     private readonly detallePedidoRepository: Repository<DetallePedido>,
+    @InjectRepository(Usuario)
+    private readonly usuarioRepository: Repository<Usuario>, // Inyección del repositorio de Usuario
+    @InjectRepository(Mesa)
+    private readonly mesaRepository: Repository<Mesa>,
   ) {}
 
   // Crear un nuevo pedido
-  async create(pedido: Pedido): Promise<Pedido> {
-    // Aquí podrías agregar validaciones
-    if (!pedido) {
-      throw new BadRequestException('Los datos del pedido son inválidos.');
-    }
+  async create(createPedidoDto: CreatePedidoDto): Promise<Pedido> {
+    const pedido = new Pedido();
+    pedido.fecha = createPedidoDto.fecha;
+    pedido.estado = createPedidoDto.estado; // Asignar el estado desde el DTO
+    pedido.usuario = await this.usuarioRepository.findOne({ where: { id: createPedidoDto.usuarioId } });
+    pedido.mesa = await this.mesaRepository.findOne({ where: { id: createPedidoDto.mesaId } });
+
     return this.pedidoRepository.save(pedido);
-  }
+}
+
 
   // Obtener todos los pedidos
   async findAll(): Promise<Pedido[]> {
@@ -37,14 +48,18 @@ export class PedidoService {
   }
 
   // Actualizar un pedido
-  async update(id: number, pedido: Pedido): Promise<Pedido> {
-    const existingPedido = await this.findOne(id); // Llama a findOne para asegurarte de que existe
-    if (!existingPedido) {
-      throw new NotFoundException(`Pedido con ID ${id} no encontrado.`);
+  async update(id: number, updatePedidoDto: UpdatePedidoDto): Promise<Pedido> {
+    const pedido = await this.pedidoRepository.findOne({ where: { id } }); // Asegúrate de que esto sea un objeto
+    if (!pedido) {
+        throw new NotFoundException(`Pedido with ID ${id} not found`);
     }
-    await this.pedidoRepository.update(id, pedido);
-    return this.findOne(id);
-  }
+
+    // Actualiza las propiedades del pedido
+    Object.assign(pedido, updatePedidoDto);
+
+    return this.pedidoRepository.save(pedido); // Guarda el pedido actualizado
+}
+
 
   // Eliminar un pedido
   async remove(id: number): Promise<void> {

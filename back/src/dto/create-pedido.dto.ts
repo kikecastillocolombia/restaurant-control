@@ -1,18 +1,19 @@
 import { IsDateString, IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { EstadoPedido } from '../enums/estado-pedido.enum'; // Importa el enum
 
 export class CreatePedidoDto {
-  @IsDateString() // Valida que sea una fecha
+  @IsDateString()
   fecha: Date;
 
   @IsString()
-  @IsNotEmpty() // Asegura que no esté vacío
-  estado: string; // 'pendiente', 'listo', 'facturado'
+  @IsNotEmpty()
+  estado: EstadoPedido; // Cambiar a tipo EstadoPedido
 
   @IsInt()
   @IsNotEmpty()
-  usuarioId: number; // ID del mesero que registró el pedido
+  usuarioId: number;
 
   @IsInt()
   @IsNotEmpty()
-  mesaId: number; // ID de la mesa donde se realizó el pedido
+  mesaId: number;
 }

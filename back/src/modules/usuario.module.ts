@@ -8,5 +8,6 @@ import { UsuarioController } from '../controllers/usuario.controller';
   imports: [TypeOrmModule.forFeature([Usuario])],
   controllers: [UsuarioController],
   providers: [UsuarioService],
+  exports: [UsuarioService, TypeOrmModule.forFeature([Usuario])],
 })
 export class UsuarioModule {}
