@@ -1,11 +1,26 @@
-import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
+import { IsString, IsNotEmpty, IsEnum, IsEmail, MinLength } from 'class-validator';
+
+// Definir enum para roles de usuario
+export enum Rol {
+  MESERO = 'mesero',
+  ADMINISTRADOR = 'administrador',
+}
 
 export class CreateUsuarioDto {
   @IsString()
   @IsNotEmpty()
   nombre: string;
 
-  @IsEnum(['mesero', 'administrador'])
+  @IsEmail()
   @IsNotEmpty()
-  rol: string;
+  email: string;
+
+  @IsString()
+  @MinLength(6)
+  @IsNotEmpty()
+  password: string;
+
+  @IsEnum(Rol)
+  @IsNotEmpty()
+  rol: Rol;
 }

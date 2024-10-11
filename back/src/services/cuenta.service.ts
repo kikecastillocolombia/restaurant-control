@@ -11,13 +11,24 @@ export class CuentaService {
   constructor(
     @InjectRepository(Cuenta)
     private readonly cuentaRepository: Repository<Cuenta>,
+    @InjectRepository(Pedido)
+    private readonly pedidoRepository: Repository<Pedido>,
   ) {}
 
-  // Crear una nueva cuenta
   async create(createCuentaDto: CreateCuentaDto): Promise<Cuenta> {
-    const cuenta = this.cuentaRepository.create(createCuentaDto); // Crea una nueva entidad Cuenta
-    return this.cuentaRepository.save(cuenta); // Guarda la nueva cuenta
+    const cuenta = new Cuenta();
+    cuenta.total = createCuentaDto.total;
+    cuenta.pagado = createCuentaDto.pagado;
+  
+    const pedido = await this.pedidoRepository.findOne({ where: { id: createCuentaDto.pedidoId } });
+    if (!pedido) {
+      throw new Error('Pedido no encontrado');
+    }
+    
+    cuenta.pedido = pedido; // Asigna el pedido a la cuenta
+    return this.cuentaRepository.save(cuenta);
   }
+  
   
 
   // Obtener todas las cuentas

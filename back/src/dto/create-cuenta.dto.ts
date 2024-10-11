@@ -1,7 +1,7 @@
-import { IsDecimal, IsNotEmpty } from 'class-validator';
+import {  IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateCuentaDto {
-  @IsDecimal({ decimal_digits: '0,2' }) // Asegúrate de que este campo sea decimal
+  @IsNumber() // Asegúrate de que este campo sea decimal
   total: number; // Total de la cuenta
 
   @IsNotEmpty() // Verifica que no esté vacío

@@ -8,6 +8,6 @@ export class MesaResponseDto {
   constructor(mesa: Mesa) {
     this.id = mesa.id;
     this.numero = mesa.numero;
-    this.pedidos = mesa.pedidos.map(pedido => pedido.id); // Solo devuelve los IDs de los pedidos, o puedes mapearlo a un DTO de pedido
+    this.pedidos = mesa.pedidos ? mesa.pedidos.map(pedido => pedido.id) : []; // Solo devuelve los IDs de los pedidos, o puedes mapearlo a un DTO de pedido
   }
 }

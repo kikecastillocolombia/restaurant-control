@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
   port: 5432,
   username: 'postgres', 
   password: 'admin',
-  database: 'restaurant', 
+  database: 'postgres', 
   entities: [Usuario, Pedido, Plato, DetallePedido, Cuenta, Mesa],
   synchronize: true, // No usar en producción
 });

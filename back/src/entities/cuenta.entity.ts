@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
 import { Pedido } from './pedido.entity';
 
 @Entity()
@@ -7,6 +7,7 @@ export class Cuenta {
   id: number;
 
   @OneToOne(() => Pedido, pedido => pedido.cuenta)
+  @JoinColumn()
   pedido: Pedido; // Relación con Pedido
 
   @Column('decimal')

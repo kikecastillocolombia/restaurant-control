@@ -13,5 +13,6 @@ UsuarioModule,
 MesaModule],
   controllers: [PedidoController],
   providers: [PedidoService],
+  exports: [TypeOrmModule]
 })
 export class PedidoModule {}
