@@ -8,5 +8,6 @@ import { PlatoController } from '../controllers/plato.controller';
   imports: [TypeOrmModule.forFeature([Plato])],
   controllers: [PlatoController],
   providers: [PlatoService],
+  exports: [TypeOrmModule]
 })
 export class PlatoModule {}

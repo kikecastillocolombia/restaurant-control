@@ -11,12 +11,20 @@ export class CuentaController {
   }
 
   @Post()
-async create(@Body() createCuentaDto: CreateCuentaDto): Promise<Cuenta> {
-  console.log(typeof createCuentaDto.total); // Debería imprimir "number"
-  return this.cuentaService.create(createCuentaDto);
-}
+  async create(@Body() createCuentaDto: CreateCuentaDto): Promise<Cuenta> {
+    console.log(typeof createCuentaDto.total); // Debería imprimir "number"
+    return this.cuentaService.create(createCuentaDto);
+  }
 
+  @Post(':pedidoId/plato/:platoId')
+  async agregarPlato(@Param('pedidoId') pedidoId: number, @Param('platoId') platoId: number) {
+    return this.cuentaService.agregarPlatoACuenta(pedidoId, platoId);
+  }
 
+  @Post(':id/cobrar')
+  async cobrar(@Param('id') cuentaId: number) {
+    return this.cuentaService.cobrarCuenta(cuentaId);
+  }
 
   @Get()
   findAll(): Promise<Cuenta[]> {
