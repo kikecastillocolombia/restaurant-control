@@ -1,13 +1,19 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Mesa } from '../entities/mesa.entity';
 
 export class MesaResponseDto {
+  @ApiProperty({ description: 'ID de la mesa' }) // Documentar la propiedad
   id: number;
+
+  @ApiProperty({ description: 'Número de la mesa' }) // Documentar la propiedad
   numero: number;
-  pedidos: number[]; // Aquí podrías incluir más información sobre los pedidos, como objetos de respuesta.
+
+  @ApiProperty({ description: 'Lista de IDs de pedidos asociados', type: [Number] }) // Documentar la propiedad
+  pedidos: number[];
 
   constructor(mesa: Mesa) {
     this.id = mesa.id;
     this.numero = mesa.numero;
-    this.pedidos = mesa.pedidos ? mesa.pedidos.map(pedido => pedido.id) : []; // Solo devuelve los IDs de los pedidos, o puedes mapearlo a un DTO de pedido
+    this.pedidos = mesa.pedidos ? mesa.pedidos.map(pedido => pedido.id) : [];
   }
 }

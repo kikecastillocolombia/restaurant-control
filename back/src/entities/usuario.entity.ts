@@ -10,10 +10,6 @@ export class Usuario {
   @Column({ length: 100 })
   nombre: string;
 
-  @Column({ unique: true })
-  @Index()  // Añadimos un índice para el email, útil para búsquedas rápidas
-  email: string;
-
   @Column()
   password: string;
 
