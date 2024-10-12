@@ -1,4 +1,4 @@
-/* src/styles.css */
+/* styles.css */
 
 /* Estilo general del cuerpo */
 body {
@@ -146,4 +146,63 @@ footer {
   h2 {
     font-size: 1.5rem; /* Tamaño de fuente ajustado */
   }
+}
+
+/* Estilos para el contenedor principal de la aplicación */
+.container {
+  display: flex; /* Flexbox para distribuir las cards */
+  flex-direction: column; /* Columna para apilar las cards */
+  align-items: center; /* Centrado horizontal */
+  margin: 20px 0; /* Espaciado superior e inferior */
+}
+
+/* Estilo para los contenedores de sesión y cuenta */
+.login-container,
+.crear-cuenta-container {
+  margin: 20px 0; /* Espaciado vertical */
+}
+
+/* Estilos para las cards */
+.card {
+  background-color: #ffffff; /* Fondo blanco */
+  border: 1px solid #ddd; /* Borde suave */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 20px; /* Espaciado interno */
+  text-align: center; /* Centrado del texto */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  width: 300px; /* Ancho fijo para las cards */
+  text-decoration: none; /* Sin subrayado en el enlace */
+  transition: transform 0.2s; /* Efecto de transición */
+}
+
+/* Efecto hover para las cards */
+.card:hover {
+  transform: translateY(-2px); /* Eleva ligeramente la card al pasar el mouse */
+}
+
+/* Estilos para los encabezados de las cards */
+.card h2 {
+  color: #0070f3; /* Color primario */
+  margin: 0; /* Sin margen en el encabezado */
+}
+
+/* Estilos para los botones de navegación */
+.navigation-buttons {
+  display: flex;
+  gap: 10px; /* Espaciado entre botones */
+  margin-bottom: 20px; /* Espaciado inferior */
+}
+
+.navigation-buttons button {
+  padding: 10px 15px;
+  background-color: #0070f3; /* Color de fondo */
+  color: white; /* Color del texto */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Cambiar el cursor al pasar el ratón */
+  transition: background-color 0.3s; /* Transición suave para el color */
+}
+
+.navigation-buttons button:hover {
+  background-color: #005bb5; /* Color de fondo al pasar el ratón */
 }
