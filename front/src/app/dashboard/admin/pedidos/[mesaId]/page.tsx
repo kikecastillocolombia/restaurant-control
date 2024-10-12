@@ -1,10 +1,9 @@
 // src/app/dashboard/admin/page.tsx
-"use client"; // Asegúrate de que esta línea sea la primera
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
-import Pedidos from './pedidos/page';
 
 const AdminDashboard: React.FC = () => {
   const [numero, setNumero] = useState(0);
@@ -32,7 +31,7 @@ const AdminDashboard: React.FC = () => {
 
     try {
       const response = await axios.post('http://localhost:3001/mesas', { numero });
-      fetchMesas(); // Refrescar la lista de mesas después de crear una nueva
+      setMesas((prevMesas) => [...prevMesas, response.data]); // Agregar la nueva mesa directamente
       setNumero(0); // Limpiar el campo
     } catch (error) {
       setError('Error al crear la mesa.');
@@ -49,7 +48,7 @@ const AdminDashboard: React.FC = () => {
 
       try {
         await axios.delete(`http://localhost:3001/mesas/${id}`);
-        fetchMesas(); // Refrescar la lista de mesas después de eliminar
+        setMesas((prevMesas) => prevMesas.filter((mesa) => mesa.id !== id)); // Actualizar el estado local
       } catch (error) {
         setError('Error al eliminar la mesa.');
       } finally {
@@ -72,9 +71,6 @@ const AdminDashboard: React.FC = () => {
           </ul>
         </nav>
         <section>
-  <Pedidos /> {/* Aquí se integrará el nuevo componente */}
-</section>
-        <section>
           <h2>Bienvenido al Dashboard del Administrador</h2>
           <p>Aquí podrás gestionar diferentes aspectos de la aplicación.</p>
           <form onSubmit={handleCreateMesa}>
@@ -95,9 +91,9 @@ const AdminDashboard: React.FC = () => {
           <ul>
             {mesas.map((mesa) => (
               <li key={mesa.id}>
-                Mesa {mesa.numero} - Estado: {mesa.estado} {/* Asegúrate de que 'estado' esté en tu respuesta */}
+                Mesa {mesa.numero} - Estado: {mesa.estado}
                 <Link href={`/dashboard/admin/pedidos/${mesa.id}`}>
-                  <button>Ver Pedidos</button> {/* Enlace a los detalles de los pedidos */}
+                  <button>Ver Pedidos</button>
                 </Link>
                 <button onClick={() => handleDeleteMesa(mesa.id)}>Eliminar</button>
               </li>
