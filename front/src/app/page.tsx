@@ -1,12 +1,22 @@
-import PedidosComponent from "@/pages/pedidos"; // Ajusta la ruta según tu estructura de carpetas
+// src/app/page.tsx
 
-const HomePage = () => {
+"use client";
+import Link from 'next/link';
+import '../styles.css'; // Asegúrate de que la ruta a tu archivo de estilos sea correcta
+
+export default function Home() {
   return (
-    <div>
-      <h1>Bienvenido al Sistema de Pedidos</h1>
-      <PedidosComponent />
-    </div>
+    <main>
+      <header>
+        <h1>Bienvenido al Control de Caja</h1>
+      </header>
+      <div className="container">
+        <p><Link href="/login">Iniciar Sesión</Link></p>
+        <p><Link href="/crear-cuenta">Crear una cuenta</Link></p>
+      </div>
+      <footer>
+        <p>© 2024 Control de Caja - Restaurante</p>
+      </footer>
+    </main>
   );
-};
-
-export default HomePage;
+}
