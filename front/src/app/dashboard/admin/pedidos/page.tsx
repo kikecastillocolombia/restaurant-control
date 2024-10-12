@@ -3,17 +3,41 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+// Define la interfaz para un pedido
+interface DetallePedido {
+  id: number;
+  cantidad: number;
+}
+
+interface Usuario {
+  nombre: string;
+  rol: string;
+}
+
+interface Mesa {
+  numero: number;
+}
+
+interface Pedido {
+  id: number;
+  fecha: string; // Suponiendo que `fecha` es un string en formato ISO
+  estado: string;
+  detalles: DetallePedido[];
+  usuario: Usuario;
+  mesa: Mesa;
+}
+
 const Pedidos: React.FC = () => {
-  const [pedidos, setPedidos] = useState([]);
+  const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPedidos = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/pedidos');
+        const response = await axios.get<Pedido[]>('http://localhost:3001/pedidos');
         setPedidos(response.data);
-      } catch (error) {
+      } catch {
         setError('Error al obtener los pedidos.');
       } finally {
         setLoading(false);
