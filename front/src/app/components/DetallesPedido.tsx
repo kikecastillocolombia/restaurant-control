@@ -1,72 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// DetallesPedido.tsx
+import React from 'react';
 
-interface Plato {
-  id: number;
-  nombre: string;
-  precio: string;
-  descripcion: string;
+interface Detalle {
+  platoId: number;
+  cantidad: number;
 }
 
 interface Pedido {
   id: number;
   fecha: string;
   estado: string;
-  usuarioId: number;
-}
-
-interface DetallePedido {
-  id: number;
-  cantidad: number;
-  plato: Plato;
-  pedido: Pedido;
+  detalles: Detalle[];
+  usuario: string;
+  mesa: string | null;
 }
 
 interface DetallesPedidoProps {
-  id: number; // Prop para el ID del detalle del pedido
+  pedido: Pedido | null; // Puede ser nulo si no hay pedido seleccionado
+  onCerrar: () => void; // Función para cerrar el detalle
 }
 
-const DetallesPedido: React.FC<DetallesPedidoProps> = ({ id }) => {
-  const [detalle, setDetalle] = useState<DetallePedido | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchDetalle = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3001/detalles-pedido/${id}`);
-        setDetalle(response.data);
-      } catch  {
-        setError('Error al cargar los detalles del pedido.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDetalle();
-  }, [id]);
-
-  if (loading) {
-    return <div>Cargando...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!detalle) {
-    return <div>No se encontraron detalles para el pedido.</div>;
+const DetallesPedido: React.FC<DetallesPedidoProps> = ({ pedido, onCerrar }) => {
+  if (!pedido) {
+    return <p>No hay pedido seleccionado.</p>;
   }
 
   return (
     <div>
-      <h2>Detalles del Pedido</h2>
-      <h3>Plato: {detalle.plato.nombre}</h3>
-      <p>Cantidad: {detalle.cantidad}</p>
-      <p>Precio: ${detalle.plato.precio}</p>
-      <p>Descripción: {detalle.plato.descripcion}</p>
-      <p>Estado del Pedido: {detalle.pedido.estado}</p>
-      <p>Fecha: {new Date(detalle.pedido.fecha).toLocaleString()}</p>
+      <h3>Detalles del Pedido ID: {pedido.id}</h3>
+      <p>Fecha: {new Date(pedido.fecha).toLocaleString()}</p>
+      <p>Estado: {pedido.estado}</p>
+      <p>Usuario: {pedido.usuario}</p>
+      <p>Mesa: {pedido.mesa ? pedido.mesa : 'No asignada'}</p>
+      <h4>Detalles:</h4>
+      <ul>
+        {pedido.detalles.map((detalle, index) => (
+          <li key={index}>
+            Plato ID: {detalle.platoId}, Cantidad: {detalle.cantidad}
+          </li>
+        ))}
+      </ul>
+      <button onClick={onCerrar}>Cerrar</button>
     </div>
   );
 };
