@@ -19,7 +19,9 @@ export function ProductCard({ product }: any) {
     }
 
     return (
-        <Card key={product.id}> {/* Asegúrate de que 'id' es la propiedad única del producto */}
+        <Card key={product.id} onClick={() => {
+            router.push(`/products/${product.id}`)
+        }}> {/* Asegúrate de que 'id' es la propiedad única del producto */}
             <CardHeader>
                 <CardTitle className="flex justify-between">
                     <p>{product.nombre}</p> {/* Usa la propiedad correcta del producto */}
@@ -35,10 +37,16 @@ export function ProductCard({ product }: any) {
                 <p>{product.descripcion}</p> {/* Puedes mostrar más propiedades según lo que necesites */}
             </CardContent>
             <CardFooter className="flex justify-between">
-                <Button className="mt-5">
+                <Button className="mt-5"
+                onClick={(e) => {
+                    e.stopPropagation()
+                    router.push(`/products/${product.id}/edit`)
+                }}>
                     Editar
                 </Button>
-                <Button className="mt-5" variant="destructive" onClick={() => handleRemoveProduct(product.id)}>
+                <Button className="mt-5" variant="destructive" onClick={(e) => {
+                    e.stopPropagation()
+                    handleRemoveProduct(product.id)}}>
                     Eliminar
                 </Button>
             </CardFooter>

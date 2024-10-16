@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Patch } from '@nestjs/common';
 import { ProductoService } from 'src/services/producto.service';
 import { Producto } from '../entities/producto.entity';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -32,7 +32,7 @@ export class ProductoController {
     return this.productoService.findOne(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   @ApiOperation({ summary: 'Actualizar un producto' })
   @ApiResponse({ status: 200, description: 'Producto actualizado', type: Producto })
   @ApiResponse({ status: 404, description: 'Producto no encontrado' })

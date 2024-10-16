@@ -40,22 +40,21 @@ export class ProductoService {
   }
 
   // Actualizar un producto
-  async update(id: number, updateProductoDto: UpdateProductoDto): Promise<Producto> {
-    const producto = await this.findOne(id);
-
-    if (updateProductoDto.nombre !== undefined) {
-      producto.nombre = updateProductoDto.nombre;
-    }
-    if (updateProductoDto.precio !== undefined) {
-      producto.precio = updateProductoDto.precio;
-    }
-    if (updateProductoDto.descripcion !== undefined) {
-      producto.descripcion = updateProductoDto.descripcion;
-    }
-
-    await this.productoRepository.save(producto);
-    return producto;
+async update(id: number, updateProductoDto: UpdateProductoDto): Promise<Producto> {
+  const producto = await this.findOne(id);
+  
+  // Manejo de errores si el producto no existe
+  if (!producto) {
+    throw new NotFoundException(`Producto con ID ${id} no encontrado`);
   }
+
+  // Actualizar propiedades del producto solo si están definidas
+  Object.assign(producto, updateProductoDto);
+
+  await this.productoRepository.save(producto);
+  return producto;
+}
+
 
   // Eliminar un producto
   async remove(id: number): Promise<void> {

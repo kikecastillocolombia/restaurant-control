@@ -5,6 +5,14 @@ export async function getProducts() {
     return await data.json()
 }
 
+export async function getProduct(id: string) {
+    const data = await fetch(`http://localhost:3001/api/productos/${id}`, {
+        cache: "no-store"
+    },
+    )
+    return await data.json()
+}
+
 export async function createProduct(productData: unknown) {
   
     const res = await fetch('http://localhost:3001/api/productos', {
@@ -31,4 +39,18 @@ export async function deleteProduct(id: string) {
 
   const data = await res.json();
   return data;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function updateProduct(id: string, newProduct: any) {
+    const res = await fetch(`http://localhost:3001/api/productos/${id}`, {
+        method: "PATCH",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newProduct),
+        cache: "no-store"
+
+    });
+    return await res.json()
 }
