@@ -1,5 +1,5 @@
 // src/services/plato.service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Plato } from '../entities/plato.entity';
@@ -14,11 +14,15 @@ export class PlatoService {
   ) {}
 
   // Crear un nuevo plato
-  async create(createPlatoDto: CreatePlatoDto): Promise<Plato> {
+async create(createPlatoDto: CreatePlatoDto): Promise<Plato> {
+  try {
     const plato = this.platoRepository.create(createPlatoDto); // Crea la entidad usando el DTO
-    return this.platoRepository.save(plato);
+    return await this.platoRepository.save(plato); // Guarda la entidad en la base de datos
+  } catch (error) {
+    // Lanza una excepción si ocurre algún error
+    throw new InternalServerErrorException('Error al crear el plato');
   }
-
+}
   // Obtener todos los platos
   async findAll(): Promise<Plato[]> {
     return this.platoRepository.find();

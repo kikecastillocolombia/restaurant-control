@@ -25,6 +25,8 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   });
 
+  app.setGlobalPrefix('api');
+  
   // Usar el ValidationPipe
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
