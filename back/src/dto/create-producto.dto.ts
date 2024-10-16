@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProductoDto {
@@ -15,4 +15,9 @@ export class CreateProductoDto {
   @IsString()
   @IsNotEmpty()
   descripcion: string; // Descripción del producto
+
+  @ApiProperty({ description: 'URL de la imagen del producto', example: 'https://ejemplo.com/imagen.jpg', required: false })
+  @IsString()
+  @IsOptional()
+  imageUrl?: string; // Campo opcional para la URL de la imagen
 }

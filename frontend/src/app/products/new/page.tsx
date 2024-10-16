@@ -6,18 +6,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import CrearPlatoForm from "@/components/ui/CrearPlatoForm"
+import CrearProductoForm from "@/components/ui/CrearProductoForm"
 
 export default function CreatePlatoPage() {
   return (
     <div className="h-screen flex justify-center items-center">
       <Card className="w-[400px]">
         <CardHeader>
-          <CardTitle>Crear Plato</CardTitle>
-          <CardDescription>Complete los datos para agregar un nuevo plato.</CardDescription>
+          <CardTitle>Crear Producto</CardTitle>
+          <CardDescription>Complete los datos para agregar un nuevo producto.</CardDescription>
         </CardHeader>
         <CardContent>
-          <CrearPlatoForm />
+          <CrearProductoForm />
         </CardContent>
       </Card>
     </div>

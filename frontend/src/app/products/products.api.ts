@@ -1,5 +1,5 @@
 export async function getProducts() {
-    const data = await fetch('http://localhost:3001/api/platos',
+    const data = await fetch('http://localhost:3001/api/productos',
         {cache: "no-store"}
     )
     return await data.json()
@@ -7,7 +7,7 @@ export async function getProducts() {
 
 export async function createProduct(productData: unknown) {
   
-    const res = await fetch('http://localhost:3001/api/platos', {
+    const res = await fetch('http://localhost:3001/api/productos', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ export async function createProduct(productData: unknown) {
 }
 
 export async function deleteProduct(id: string) {
-    const res = await fetch(`http://localhost:3001/api/platos/${id}`, {
+    const res = await fetch(`http://localhost:3001/api/productos/${id}`, {
         method: "DELETE",
     });
     // Si no hay contenido en la respuesta (status 204 No Content), no intentes parsear JSON

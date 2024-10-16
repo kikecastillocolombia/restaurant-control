@@ -16,4 +16,9 @@ export class UpdateProductoDto {
   @IsString()
   @IsOptional()
   descripcion?: string; // Descripción del producto
+
+  @ApiProperty({ description: 'URL de la imagen del producto', example: 'https://ejemplo.com/imagen.jpg', required: false })
+  @IsString()
+  @IsOptional()
+  imageUrl?: string; // Campo opcional para la URL de la imagen
 }
