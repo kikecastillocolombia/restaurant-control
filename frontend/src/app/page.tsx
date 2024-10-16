@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
-import { buttonVariants, Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { getProducts } from './products/products.api'; // Asegúrate de que esta ruta es correcta
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Asegúrate de que CardContent esté importado
-
+import { ProductCard } from '@/components/product-card';
 export const dynamic = "force-dynamic"
 
 export default async function Home() {
@@ -20,24 +20,9 @@ export default async function Home() {
       </Link>
 
       {/* Mapa de productos */}
-      <div className="grid grid-cols-3 gap-4 mt-4"> {/* Usa grid para mostrar productos */}
-        {products.map(product => (
-          <Card key={product.id}> {/* Asegúrate de que 'id' es la propiedad única del producto */}
-            <CardHeader>
-              <CardTitle className="flex justify-between">
-              <p>{product.nombre}</p> {/* Usa la propiedad correcta del producto */}
-              <span className="text-sm font-bold text-gray-500">
-              <p>${product.precio}</p> {/* Puedes mostrar más propiedades según lo que necesites */}
-              </span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{product.descripcion}</p> {/* Puedes mostrar más propiedades según lo que necesites */}
-            <Button className="mt-5">
-              Eliminar
-            </Button>
-            </CardContent>
-          </Card>
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4"> {/* Usa grid para mostrar productos */}
+        {products.map((product:any) => (
+          <ProductCard product={product} key={product.id}/>
         ))}
       </div>
     </div>
