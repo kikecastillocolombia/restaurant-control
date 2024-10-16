@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { DetallePedido } from './detalle-pedido.entity';
 
 @Entity()
-export class Plato {
+export class Producto {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -13,8 +13,11 @@ export class Plato {
   precio: number;
 
   @Column()
-  descripcion: string; // Descripción del plato
+  descripcion: string; // Descripción del producto
 
-  @OneToMany(() => DetallePedido, detalle => detalle.plato) // Relación con DetallePedido
+  @Column({ nullable: true }) // Campo opcional para la URL de la imagen
+  imageUrl?: string;
+
+  @OneToMany(() => DetallePedido, detalle => detalle.producto) // Actualización de la relación con DetallePedido
   detalles: DetallePedido[];
 }

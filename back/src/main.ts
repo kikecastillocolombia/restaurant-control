@@ -8,6 +8,18 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  // Configurar CORS
+  app.enableCors({
+    origin: 'http://localhost:3000', // Permitir solo el frontend
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  });
+
+  // Establecer el prefijo global
+  app.setGlobalPrefix('api');
+
+  // Usar el ValidationPipe
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+
   // Configuración de Swagger
   const config = new DocumentBuilder()
     .setTitle('API de Control de Caja')
@@ -15,20 +27,11 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('control-caja') // Puedes añadir etiquetas según sea necesario
     .build();
-  
+
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
 
-  // Configurar CORS
-  app.enableCors({
-    origin: 'http://localhost:3000', // Permitir solo el frontend
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  });
-
-  app.setGlobalPrefix('api');
-  
-  // Usar el ValidationPipe
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  // Ajustar la ruta de Swagger para que incluya el prefijo global
+  SwaggerModule.setup('api/docs', app, document);
 
   await app.listen(3001);
 }
