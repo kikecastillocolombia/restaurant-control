@@ -6,7 +6,7 @@ import { CreateCuentaDto } from 'src/dto/create-cuenta.dto';
 import { CuentaResponseDto } from 'src/dto/cuenta-response.dto';
 import { Pedido } from 'src/entities/pedido.entity';
 import { DetallePedido } from '../entities/detalle-pedido.entity';
-import { Plato } from '../entities/plato.entity';
+import { Producto } from '../entities/producto.entity';
 
 @Injectable()
 export class CuentaService {
@@ -17,8 +17,8 @@ export class CuentaService {
     private readonly pedidoRepository: Repository<Pedido>,
     @InjectRepository(DetallePedido)
     private readonly detallePedidoRepository: Repository<DetallePedido>,
-    @InjectRepository(Plato)
-    private readonly platoRepository: Repository<Plato>,
+    @InjectRepository(Producto)
+    private readonly productoRepository: Repository<Producto>,
   ) {}
 
   async create(createCuentaDto: CreateCuentaDto): Promise<Cuenta> {
@@ -51,7 +51,7 @@ export class CuentaService {
   private async calcularTotal(pedidoId: number): Promise<number> {
     const detalles = await this.detallePedidoRepository.find({
       where: { pedido: { id: pedidoId } },
-      relations: ['plato'],
+      relations: ['producto'],
     });
 
     if (!detalles.length) {
@@ -59,7 +59,7 @@ export class CuentaService {
     }
 
     const total = detalles.reduce((acc, detalle) => {
-      return acc + (detalle.cantidad * detalle.plato.precio); // Sumar el costo total
+      return acc + (detalle.cantidad * detalle.producto.precio); // Sumar el costo total
     }, 0);
 
     return total;
@@ -91,12 +91,12 @@ export class CuentaService {
     const pedido = await this.pedidoRepository.findOne({ where: { id: pedidoId }, relations: ['cuenta'] });
     if (!pedido) throw new Error('Pedido no encontrado');
   
-    const plato = await this.platoRepository.findOne({ where: { id: platoId } });
+    const plato = await this.productoRepository.findOne({ where: { id: platoId } });
     if (!plato) throw new Error('Plato no encontrado');
   
     const detallePedido = new DetallePedido();
     detallePedido.pedido = pedido;
-    detallePedido.plato = plato;
+    detallePedido.producto = plato;
     detallePedido.cantidad = 1; // O cualquier lógica que uses para la cantidad
   
     await this.detallePedidoRepository.save(detallePedido);

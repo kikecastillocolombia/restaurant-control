@@ -10,7 +10,7 @@ export class CreateDetallePedidoDto {
   @ApiProperty({ description: 'ID del plato asociado', example: 1 })
   @IsInt()
   @IsNotEmpty()
-  platoId: number; // ID del plato asociado
+  productoId: number; // ID del plato asociado
 
   @ApiProperty({ description: 'ID del pedido al que pertenece el detalle', example: 1 })
   @IsInt()

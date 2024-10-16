@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppDataSource } from './typeorm.config';
 import { PedidoModule } from './modules/pedido.module';
 import { UsuarioModule } from './modules/usuario.module';
-import { PlatoModule } from './modules/plato.module';
+import { ProductoModule } from './modules/producto.module';
 import { MesaModule } from './modules/mesa.module';
 import { DetallePedidoModule } from './modules/detalle-pedido.module';
 import { CuentaModule } from './modules/cuenta.module';
@@ -13,7 +13,7 @@ import { CuentaModule } from './modules/cuenta.module';
     TypeOrmModule.forRoot(AppDataSource.options),
     PedidoModule,
     UsuarioModule,
-    PlatoModule,
+    ProductoModule,
     MesaModule,
     DetallePedidoModule,
     CuentaModule

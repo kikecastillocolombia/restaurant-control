@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Pedido } from './pedido.entity';
-import { Plato } from './plato.entity';
+import { Producto } from './producto.entity'; // Cambiado de Plato a Producto
 
 @Entity()
 export class DetallePedido {
@@ -10,8 +10,8 @@ export class DetallePedido {
   @ManyToOne(() => Pedido, pedido => pedido.detalles)
   pedido: Pedido;
 
-  @ManyToOne(() => Plato, plato => plato.detalles)
-  plato: Plato;
+  @ManyToOne(() => Producto, producto => producto.detalles) // Cambiado de Plato a Producto
+  producto: Producto; // Cambiado de plato a producto
 
   @Column()
   cantidad: number;
