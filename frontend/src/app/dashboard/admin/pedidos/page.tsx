@@ -1,16 +1,29 @@
-// src/app/dashboard/admin/pedidos/page.tsx
-
 "use client";
 
 import { useEffect, useState } from 'react';
 import { getPedidos, deletePedido } from './pedidos.api';
 import { useRouter } from 'next/navigation';
 
-// Definir la interfaz para un pedido
+// Definir la interfaz para un producto
+interface Producto {
+  id: string;
+  nombre: string;
+}
+
+// Definir la interfaz para los detalles del pedido
+interface DetallePedido {
+  id: string;
+  cantidad: number;
+  producto: Producto | null; // Permitir que producto sea null
+}
+
+// Definir la interfaz para el pedido
 interface Pedido {
   id: string;
   fecha: string;
   estado: string;
+  mesa: { id: string; numero: number } | null; // Cambiar nombre a numero
+  detalles: DetallePedido[]; // Incluir detalles de pedido
 }
 
 const PedidosPage: React.FC = () => {
@@ -46,6 +59,8 @@ const PedidosPage: React.FC = () => {
             <th>ID</th>
             <th>Fecha</th>
             <th>Estado</th>
+            <th>Mesa</th> {/* Mostrar mesa */}
+            <th>Detalles</th> {/* Mostrar detalles */}
             <th>Acciones</th>
           </tr>
         </thead>
@@ -55,6 +70,16 @@ const PedidosPage: React.FC = () => {
               <td>{pedido.id}</td>
               <td>{new Date(pedido.fecha).toLocaleString()}</td>
               <td>{pedido.estado}</td>
+              <td>{pedido.mesa ? pedido.mesa.numero : 'Mesa no disponible'}</td> {/* Mostrar número de la mesa */}
+              <td>
+                <ul>
+                  {pedido.detalles.map(detalle => (
+                    <li key={detalle.id}>
+                      {detalle.cantidad} x {detalle.producto?.nombre || 'Producto no disponible'}
+                    </li>
+                  ))}
+                </ul>
+              </td>
               <td>
                 <button 
                   className="bg-yellow-500 text-white p-1 rounded mr-2" 

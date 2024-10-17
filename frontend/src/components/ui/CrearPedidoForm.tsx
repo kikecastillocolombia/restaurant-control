@@ -1,20 +1,56 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from 'react';
-import { buttonVariants } from '@/components/ui/button';
-import { createPedido } from '@/app/dashboard/admin/pedidos/pedidos.api'; // Asegúrate de implementar este método
-import { createDetallePedido } from '@/app/dashboard/admin/pedidos/detallePedidos.api'; // Asegúrate de implementar este método
-import { getProducts } from '@/app/dashboard/admin/products/products.api'; // Para obtener productos
+"use client";
 
-// Define la interfaz para el detalle del pedido
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation"; // Importar useRouter
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { createPedido } from "@/app/dashboard/admin/pedidos/pedidos.api";
+import { createDetallePedido } from "@/app/dashboard/admin/pedidos/detallePedidos.api"; 
+import { getProducts } from "@/app/dashboard/admin/products/products.api"; 
+import { getMesas } from "@/app/dashboard/admin/mesas/mesas.api";
+
 interface DetallePedido {
   cantidad: number;
   productoId: number;
 }
 
+interface Producto {
+  id: number;
+  nombre: string;
+  precio: number;
+}
+
+interface Mesa {
+  id: number;
+  numero: number;
+}
+
 const CrearPedidoForm = () => {
-  const [pedido, setPedido] = useState({ fecha: '', estado: 'pendiente', usuarioId: 1, mesaId: 1 });
-  const [detalles, setDetalles] = useState<DetallePedido[]>([{ cantidad: 1, productoId: 1 }]); // Usa la interfaz aquí
-  const [products, setProducts] = useState<any[]>([]);
+  const router = useRouter(); // Crear instancia del router
+
+  const [pedido, setPedido] = useState({
+    fecha: new Date().toISOString().slice(0, 16),
+    estado: "pendiente",
+    usuarioId: 1,
+    mesaId: 1,
+  });
+
+  const [detalles, setDetalles] = useState<DetallePedido[]>([
+    { cantidad: 1, productoId: 1 },
+  ]);
+
+  const [products, setProducts] = useState<Producto[]>([]);
+  const [mesas, setMesas] = useState<Mesa[]>([]);
+
+  useEffect(() => {
+    const fetchMesas = async () => {
+      const fetchedMesas = await getMesas();
+      setMesas(fetchedMesas);
+    };
+
+    fetchMesas();
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,19 +65,21 @@ const CrearPedidoForm = () => {
     e.preventDefault();
     const newPedido = await createPedido(pedido);
 
-    // Crear detalles después de crear el pedido
     for (const detalle of detalles) {
       await createDetallePedido({ ...detalle, pedidoId: newPedido.id });
     }
 
-    // Resetear formulario
-    setPedido({ fecha: '', estado: 'pendiente', usuarioId: 1, mesaId: 1 });
+    // Redirigir a la vista de pedidos
+    router.push("/dashboard/admin/pedidos"); // Cambia la ruta según tu estructura de carpetas
+
+    // Reiniciar el estado del formulario
+    setPedido({ fecha: new Date().toISOString().slice(0, 16), estado: "pendiente", usuarioId: 1, mesaId: 1 });
     setDetalles([{ cantidad: 1, productoId: 1 }]);
   };
 
   const handleChangeDetalle = (index: number, field: keyof DetallePedido, value: number) => {
     const newDetalles = [...detalles];
-    newDetalles[index][field] = value; // TypeScript ahora reconoce el tipo
+    newDetalles[index][field] = value;
     setDetalles(newDetalles);
   };
 
@@ -50,50 +88,77 @@ const CrearPedidoForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmitPedido} className="flex flex-col gap-4">
-      <h2 className="text-2xl font-bold">Crear Pedido</h2>
-      <label>
-        Fecha:
-        <input type="datetime-local" value={pedido.fecha} onChange={(e) => setPedido({ ...pedido, fecha: e.target.value })} required />
-      </label>
-      <label>
-        Usuario ID:
-        <input type="number" value={pedido.usuarioId} onChange={(e) => setPedido({ ...pedido, usuarioId: Number(e.target.value) })} required />
-      </label>
-      <label>
-        Mesa ID:
-        <input type="number" value={pedido.mesaId} onChange={(e) => setPedido({ ...pedido, mesaId: Number(e.target.value) })} required />
-      </label>
+    <form onSubmit={handleSubmitPedido} className="space-y-4">
+      <div className="grid w-full items-center gap-4">
+        {/* Campo para la fecha del pedido */}
+        <div className="flex flex-col space-y-1.5">
+          <Label htmlFor="fecha">Fecha</Label>
+          <Input
+            id="fecha"
+            type="datetime-local"
+            value={pedido.fecha}
+            onChange={(e) => setPedido({ ...pedido, fecha: e.target.value })}
+            required
+          />
+        </div>
+
+        {/* Campo para la Mesa ID */}
+        <div className="flex flex-col space-y-1.5">
+          <Label htmlFor="mesaId">Mesa</Label>
+          <select
+            id="mesaId"
+            value={pedido.mesaId}
+            onChange={(e) => setPedido({ ...pedido, mesaId: Number(e.target.value) })}
+            required
+            className="border border-gray-300 rounded bg-white px-2 py-1"
+          >
+            {mesas.map((mesa) => (
+              <option key={mesa.id} value={mesa.id}>
+                Mesa {mesa.numero}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
       <h2 className="text-xl font-bold">Detalles del Pedido</h2>
       {detalles.map((detalle, index) => (
         <div key={index} className="flex gap-2">
-          <label>
-            Cantidad:
-            <input
+          <div className="flex flex-col space-y-1.5">
+            <Label htmlFor={`cantidad-${index}`}>Cantidad</Label>
+            <Input
+              id={`cantidad-${index}`}
               type="number"
               value={detalle.cantidad}
-              onChange={(e) => handleChangeDetalle(index, 'cantidad', Number(e.target.value))}
+              onChange={(e) => handleChangeDetalle(index, "cantidad", Number(e.target.value))}
               required
             />
-          </label>
-          <label>
-            Producto:
+          </div>
+          <div className="flex flex-col space-y-1.5">
+            <Label htmlFor={`producto-${index}`}>Producto</Label>
             <select
+              id={`producto-${index}`}
               value={detalle.productoId}
-              onChange={(e) => handleChangeDetalle(index, 'productoId', Number(e.target.value))}
+              onChange={(e) => handleChangeDetalle(index, "productoId", Number(e.target.value))}
               required
+              className="border border-gray-300 rounded bg-white px-2 py-1"
             >
               {products.map((product) => (
-                <option key={product.id} value={product.id}>{product.nombre}</option>
+                <option key={product.id} value={product.id}>
+                  {product.nombre}
+                </option>
               ))}
             </select>
-          </label>
+          </div>
         </div>
       ))}
-      <button type="button" onClick={addDetalle} className={buttonVariants()}>Agregar Detalle</button>
+      <Button type="button" onClick={addDetalle} className="mt-4">
+        Agregar Detalle
+      </Button>
 
-      <button type="submit" className={buttonVariants()}>Crear Pedido</button>
+      <Button type="submit" className="mt-4">
+        Crear Pedido
+      </Button>
     </form>
   );
 };
