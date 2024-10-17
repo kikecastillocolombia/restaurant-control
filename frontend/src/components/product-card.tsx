@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"; // Asegúrate de que CardContent esté importado
 import { Button } from "@/components/ui/button";
-import { deleteProduct } from '@/app/products/products.api';
+import { deleteProduct } from '@/app/dashboard/admin/products/products.api';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image'; // Importa el componente Image de Next.js
 
@@ -13,7 +13,6 @@ export function ProductCard({ product }: any) {
     async function handleRemoveProduct(id: string) {
         const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este producto?");
         if (confirmDelete) {
-            console.log(id);
             await deleteProduct(id);
             router.refresh();
         }
@@ -21,7 +20,7 @@ export function ProductCard({ product }: any) {
 
     return (
         <Card key={product.id} onClick={() => {
-            router.push(`/products/${product.id}`)
+            router.push(`/dashboard/admin/products/${product.id}`)
         }}> {/* Asegúrate de que 'id' es la propiedad única del producto */}
             <CardHeader>
                 <CardTitle className="flex justify-between">
@@ -48,7 +47,7 @@ export function ProductCard({ product }: any) {
                 <Button className="mt-5"
                 onClick={(e) => {
                     e.stopPropagation();
-                    router.push(`/products/${product.id}/edit`);
+                    router.push(`/dashboard/admin/products/${product.id}/edit`);
                 }}>
                     Editar
                 </Button>

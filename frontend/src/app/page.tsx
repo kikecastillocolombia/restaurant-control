@@ -1,29 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
+import Link from 'next/link'
+import React from 'react'
+import { buttonVariants } from '@/components/ui/button'
 
-export const dynamic = "force-dynamic";
-
-export default function Dashboard() {
+function HomePage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      {/* Contenedor principal centrado vertical y horizontalmente */}
-
-      <h1 className="text-4xl font-bold mb-6">
-        {/* Título principal con margen inferior */}
-        Dashboard de Administrador
-      </h1>
-
-      <Link href="/products" className={buttonVariants()}>
-        {/* Botón que redirige al CRUD de productos */}
-        Gestionar Productos
-      </Link>
+    <div>
+      HomePage
       <br/>
-
-      <Link href="/mesas" className={buttonVariants()}>
-        Gestionar Mesas
+      <Link href="/dashboard/admin" className={buttonVariants()}>
+        {/* Botón que redirige al CRUD de productos */}
+        Administrador
       </Link>
+
 
     </div>
-  );
+  )
 }
+
+export default HomePage
