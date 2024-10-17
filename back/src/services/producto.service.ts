@@ -40,35 +40,31 @@ export class ProductoService {
   }
 
   // Actualizar un producto
-async update(id: number, updateProductoDto: UpdateProductoDto): Promise<Producto> {
-  const producto = await this.findOne(id);
+  async update(id: number, updateProductoDto: UpdateProductoDto): Promise<Producto> {
+    const producto = await this.findOne(id); // Esto lanza NotFoundException si el producto no existe
+    
+    Object.assign(producto, updateProductoDto); // Actualiza solo los campos que se definen en updateProductoDto
   
-  // Manejo de errores si el producto no existe
-  if (!producto) {
-    throw new NotFoundException(`Producto con ID ${id} no encontrado`);
+    return this.productoRepository.save(producto);
   }
-
-  // Actualizar propiedades del producto solo si están definidas
-  Object.assign(producto, updateProductoDto);
-
-  await this.productoRepository.save(producto);
-  return producto;
-}
+  
 
 
   // Eliminar un producto
   async remove(id: number): Promise<void> {
-    // Verificar si hay detalles de pedido asociados al producto
-    const detalles = await this.detallePedidoRepository.find({ where: { producto: {id} } });
-    
-    if (detalles.length > 0) {
-      throw new BadRequestException(`No se puede eliminar el producto con ID ${id} porque tiene detalles de pedido asociados.`);
-    }
-
-    // Intentar eliminar el producto
-    const result = await this.productoRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Producto con ID ${id} no encontrado.`);
+    try {
+      const detalles = await this.detallePedidoRepository.find({ where: { producto: { id } } });
+  
+      if (detalles.length > 0) {
+        throw new BadRequestException(`No se puede eliminar el producto con ID ${id} porque tiene detalles de pedido asociados.`);
+      }
+  
+      const result = await this.productoRepository.delete(id);
+      if (result.affected === 0) {
+        throw new NotFoundException(`Producto con ID ${id} no encontrado.`);
+      }
+    } catch (error) {
+      throw new InternalServerErrorException('Error al eliminar el producto');
     }
   }
-}
+  }

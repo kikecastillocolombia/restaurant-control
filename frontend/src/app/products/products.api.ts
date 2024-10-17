@@ -1,12 +1,14 @@
+export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
+
 export async function getProducts() {
-    const data = await fetch('http://localhost:3001/api/productos',
+    const data = await fetch(`${BACKEND_URL}/api/productos`,
         {cache: "no-store"}
     )
     return await data.json()
 }
 
 export async function getProduct(id: string) {
-    const data = await fetch(`http://localhost:3001/api/productos/${id}`, {
+    const data = await fetch(`${BACKEND_URL}/api/productos/${id}`, {
         cache: "no-store"
     },
     )
@@ -15,7 +17,7 @@ export async function getProduct(id: string) {
 
 export async function createProduct(productData: unknown) {
   
-    const res = await fetch('http://localhost:3001/api/productos', {
+    const res = await fetch(`${BACKEND_URL}/api/productos`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -29,7 +31,7 @@ export async function createProduct(productData: unknown) {
 }
 
 export async function deleteProduct(id: string) {
-    const res = await fetch(`http://localhost:3001/api/productos/${id}`, {
+    const res = await fetch(`${BACKEND_URL}/api/productos/${id}`, {
         method: "DELETE",
     });
     // Si no hay contenido en la respuesta (status 204 No Content), no intentes parsear JSON
@@ -43,7 +45,7 @@ export async function deleteProduct(id: string) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updateProduct(id: string, newProduct: any) {
-    const res = await fetch(`http://localhost:3001/api/productos/${id}`, {
+    const res = await fetch(`${BACKEND_URL}/api/productos/${id}`, {
         method: "PATCH",
         headers: {
             'Content-Type': 'application/json'

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Patch, ParseIntPipe } from '@nestjs/common';
 import { ProductoService } from 'src/services/producto.service';
 import { Producto } from '../entities/producto.entity';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -25,26 +25,26 @@ export class ProductoController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Obtener un producto por ID' })
-  @ApiResponse({ status: 200, description: 'Producto encontrado', type: Producto })
-  @ApiResponse({ status: 404, description: 'Producto no encontrado' })
-  async findOne(@Param('id') id: number): Promise<Producto> {
-    return this.productoService.findOne(id);
-  }
+@ApiOperation({ summary: 'Obtener un producto por ID' })
+@ApiResponse({ status: 200, description: 'Producto encontrado', type: Producto })
+@ApiResponse({ status: 404, description: 'Producto no encontrado' })
+async findOne(@Param('id', ParseIntPipe) id: number): Promise<Producto> {
+  return this.productoService.findOne(id);
+}
 
-  @Patch(':id')
-  @ApiOperation({ summary: 'Actualizar un producto' })
-  @ApiResponse({ status: 200, description: 'Producto actualizado', type: Producto })
-  @ApiResponse({ status: 404, description: 'Producto no encontrado' })
-  async update(@Param('id') id: number, @Body() updateProductoDto: UpdateProductoDto): Promise<Producto> {
-    return this.productoService.update(id, updateProductoDto);
-  }
+@Patch(':id')
+@ApiOperation({ summary: 'Actualizar un producto' })
+@ApiResponse({ status: 200, description: 'Producto actualizado', type: Producto })
+@ApiResponse({ status: 404, description: 'Producto no encontrado' })
+async update(@Param('id', ParseIntPipe) id: number, @Body() updateProductoDto: UpdateProductoDto): Promise<Producto> {
+  return this.productoService.update(id, updateProductoDto);
+}
 
-  @Delete(':id')
-  @ApiOperation({ summary: 'Eliminar un producto' })
-  @ApiResponse({ status: 204, description: 'Producto eliminado exitosamente' })
-  @ApiResponse({ status: 404, description: 'Producto no encontrado' })
-  async remove(@Param('id') id: number): Promise<void> {
-    return this.productoService.remove(id);
-  }
+@Delete(':id')
+@ApiOperation({ summary: 'Eliminar un producto' })
+@ApiResponse({ status: 204, description: 'Producto eliminado exitosamente' })
+@ApiResponse({ status: 404, description: 'Producto no encontrado' })
+async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  return this.productoService.remove(id);
+}
 }
