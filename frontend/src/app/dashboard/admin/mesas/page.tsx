@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { getMesas, createMesa } from "@/app/mesas/mesas.api"; 
+import { getMesas, createMesa } from "./mesas.api"; 
 import { MesaCard } from "@/components/mesa-card"; 
 import CrearMesaForm from "@/components/ui/CrearMesaForm";
 import { Mesa, MesaWithoutId } from "@/types"; 

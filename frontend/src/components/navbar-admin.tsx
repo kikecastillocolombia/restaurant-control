@@ -10,7 +10,7 @@ const navItems = [
   { name: "Dashboard", href: "/dashboard/admin", icon: Home },
   { name: "Productos", href: "/dashboard/admin/products", icon: Package },
   { name: "Mesas", href: "/dashboard/admin/mesas", icon: Table },
-  { name: "Usuarios", href: "/dashboard/admin/users", icon: Users },
+  { name: "Usuarios", href: "/dashboard/admin/usuarios", icon: Users },
   { name: "Configuración", href: "/dashboard/admin/settings", icon: Settings },
 ];
 

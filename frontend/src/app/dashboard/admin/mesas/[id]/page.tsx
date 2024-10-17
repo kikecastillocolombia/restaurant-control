@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { getMesa } from '@/app/mesas/mesas.api';
+import { getMesa } from '@/app/dashboard/admin/mesas/mesas.api';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 
@@ -18,7 +18,7 @@ export default async function MesaDetailPage({ params }: Props) {
                 <CardHeader>
                     <CardTitle className="flex justify-between">
                         Detalles de la Mesa {mesa.numero}
-                        <Link className={buttonVariants()} href="/mesas">
+                        <Link className={buttonVariants()} href="/dashboard/admin/mesas">
                             Volver
                         </Link>
                     </CardTitle>
