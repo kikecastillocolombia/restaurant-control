@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import { getMesas, createMesa } from "./mesas.api"; // Asegúrate de importar createMesa
 import { MesaCard } from "@/components/mesa-card"; 
