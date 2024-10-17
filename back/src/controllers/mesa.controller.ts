@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
 import { MesaService } from '../services/mesa.service';
 import { Mesa } from '../entities/mesa.entity';
 import { CreateMesaDto } from 'src/dto/create-mesa.dto';
@@ -33,7 +33,7 @@ export class MesaController {
     return this.mesaService.findOne(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   @ApiOperation({ summary: 'Actualizar una mesa' })
   @ApiResponse({ status: 200, description: 'Mesa actualizada', type: MesaResponseDto })
   @ApiResponse({ status: 404, description: 'Mesa no encontrada' })
