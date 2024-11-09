@@ -14,7 +14,7 @@ export default async function Home() {
         NextNestApp
       </h1>
 
-      <Link href="/products/new" className={buttonVariants()}>
+      <Link href="/dashboard/admin/products/new" className={buttonVariants()}>
         Crear Producto
       </Link>
 

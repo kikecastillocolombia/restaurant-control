@@ -3,7 +3,7 @@
 "use client"; // Asegúrate de agregar esta línea
 
 import { useEffect, useState } from "react";
-import { getMesa, updateMesa } from "@/app/mesas/mesas.api"; // Asegúrate de tener estas funciones
+import { getMesa, updateMesa } from "@/app/dashboard/admin/mesas/mesas.api"; // Asegúrate de tener estas funciones
 import { useRouter, useParams } from "next/navigation"; // Cambia esto para usar useParams
 import { MesaWithoutId } from "@/types";
 import CrearMesaForm from "@/components/ui/CrearMesaForm";
@@ -32,7 +32,7 @@ const EditMesaPage = () => {
     if (id) {
       try {
         await updateMesa(id as string, mesaData); // Actualiza la mesa
-        router.push("/mesas"); // Redirige a la lista de mesas
+        router.push("/dashboard/admin/mesas"); // Redirige a la lista de mesas
       } catch (error) {
         console.error("Error al actualizar la mesa:", error);
         // Manejo de error adicional si es necesario

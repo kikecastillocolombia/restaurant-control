@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mesa } from '@/types'; 
 import Link from 'next/link';
 import { buttonVariants } from "@/components/ui/button"; // Asegúrate de importar los estilos de botón
-import { deleteMesa } from '@/app/mesas/mesas.api'; // Importar la función de eliminación
+import { deleteMesa } from '@/app/dashboard/admin/mesas/mesas.api'; // Importar la función de eliminación
 
 interface MesaCardProps {
   mesa: Mesa; 
@@ -28,7 +28,7 @@ export function MesaCard({ mesa, onDelete }: MesaCardProps) {
       </CardHeader>
       <CardContent>
         <div className="flex justify-between">
-          <Link href={`/mesas/${mesa.id}/edit`} className={buttonVariants()}>
+          <Link href={`/dashboard/admin/mesas/${mesa.id}/edit`} className={buttonVariants()}>
             Editar
           </Link>
           <button 

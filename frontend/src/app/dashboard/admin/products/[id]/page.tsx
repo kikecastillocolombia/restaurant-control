@@ -20,7 +20,7 @@ async function ProductDetailPage({ params }: Props) {
           <CardTitle className='flex justify-between'>
             Detalles: <br />
             {product.nombre}
-            <Link className={buttonVariants()} href='/'>
+            <Link className={buttonVariants()} href='/products'>
               Volver
             </Link>
           </CardTitle>

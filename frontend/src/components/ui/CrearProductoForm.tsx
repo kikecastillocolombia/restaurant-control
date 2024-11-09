@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useForm } from 'react-hook-form';
-import { createProduct, updateProduct } from '@/app/products/products.api';
+import { createProduct, updateProduct } from '@/app/dashboard/admin/products/products.api';
 import { useParams, useRouter } from 'next/navigation';
 
 // Define la interfaz de los datos del formulario
@@ -52,7 +52,7 @@ function CrearProductoForm({ product }: any) {
         await createProduct(formattedData);
         console.log('Producto creado:', formattedData);
       }
-      router.push('/');
+      router.push('/dashboard/admin/products');
       router.refresh();
     } catch (error) {
       console.error('Error al crear/actualizar el producto:', error);
